@@ -1,21 +1,25 @@
 package com.example.OrdersAndNotificationsManager.Hotels;
 
+import java.util.List;
+
 public class Hotel {
     private String id; // Unique ID for the hotel
     private String name;
     private String location;
-    private double rating;
-    private double balance; // For any financial tracking
+    private double rating; // 0.0 to 5.0
+    private double balance; // For financial tracking
+    private List<RoomType> roomTypes; // List of available room types in the hotel
 
     // Constructors
     public Hotel() {}
 
-    public Hotel(String id, String name, String location, double rating, double balance) {
+    public Hotel(String id, String name, String location, double rating, double balance, List<RoomType> roomTypes) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.rating = rating;
         this.balance = balance;
+        this.roomTypes = roomTypes;
     }
 
     // Getters and Setters
@@ -48,7 +52,11 @@ public class Hotel {
     }
 
     public void setRating(double rating) {
-        this.rating = rating;
+        if (rating >= 0.0 && rating <= 5.0) {
+            this.rating = rating;
+        } else {
+            throw new IllegalArgumentException("Rating must be between 0.0 and 5.0.");
+        }
     }
 
     public double getBalance() {
@@ -57,5 +65,13 @@ public class Hotel {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public List<RoomType> getRoomTypes() {
+        return roomTypes;
+    }
+
+    public void setRoomTypes(List<RoomType> roomTypes) {
+        this.roomTypes = roomTypes;
     }
 }

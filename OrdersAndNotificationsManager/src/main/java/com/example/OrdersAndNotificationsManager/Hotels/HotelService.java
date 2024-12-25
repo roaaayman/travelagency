@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService {
@@ -16,12 +17,10 @@ public class HotelService {
 
     // Retrieve hotel by ID
     public Hotel getHotelById(String id) {
-        for (Hotel hotel : hotelList) {
-            if (hotel.getId().equals(id)) {
-                return hotel;
-            }
-        }
-        return null;
+        return hotelList.stream()
+                .filter(hotel -> hotel.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     // Update hotel balance
@@ -36,11 +35,27 @@ public class HotelService {
 
     // Check uniqueness of hotel ID
     public boolean checkIdUniqueness(String id) {
-        for (Hotel hotel : hotelList) {
-            if (hotel.getId().equals(id)) {
-                return false;
+        return hotelList.stream().noneMatch(hotel -> hotel.getId().equals(id));
+    }
+
+    // Search hotels by name, location, or rating
+    public List<Hotel> searchHotels(String keyword) {
+        return hotelList.stream()
+                .filter(hotel -> hotel.getName().contains(keyword) || hotel.getLocation().contains(keyword))
+                .collect(Collectors.toList());
+    }
+
+    // Update room availability
+    public boolean updateRoomAvailability(String hotelId, String roomType, int availableRooms) {
+        Hotel hotel = getHotelById(hotelId);
+        if (hotel != null) {
+            for (RoomType room : hotel.getRoomTypes()) {
+                if (room.getType().equalsIgnoreCase(roomType)) {
+                    room.setAvailableRooms(availableRooms);
+                    return true;
+                }
             }
         }
-        return true;
+        return false;
     }
 }

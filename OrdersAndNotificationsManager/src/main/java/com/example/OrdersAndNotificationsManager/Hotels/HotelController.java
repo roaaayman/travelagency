@@ -3,6 +3,8 @@ package com.example.OrdersAndNotificationsManager.Hotels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/hotels")
 public class HotelController {
@@ -37,5 +39,16 @@ public class HotelController {
         } else {
             return "Hotel not found.";
         }
+    }
+
+    @GetMapping("/search")
+    public List<Hotel> searchHotels(@RequestParam("keyword") String keyword) {
+        return hotelService.searchHotels(keyword);
+    }
+
+    @PutMapping("/{id}/rooms")
+    public String updateRoomAvailability(@PathVariable String id, @RequestParam String roomType, @RequestParam int availableRooms) {
+        boolean updated = hotelService.updateRoomAvailability(id, roomType, availableRooms);
+        return updated ? "Room availability updated." : "Hotel or room type not found.";
     }
 }

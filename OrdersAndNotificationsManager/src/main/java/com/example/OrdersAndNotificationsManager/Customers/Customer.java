@@ -8,6 +8,14 @@ public class Customer {
     private String location;
     private String address;
 
+    private String phone;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getPhone() {
+        return phone;
+    }
     public String getAddress() {
         return address;
     }
@@ -24,11 +32,12 @@ public class Customer {
         this.location = location;
     }
 
-    public Customer(String email, String password,  String location,String address) {
+    public Customer(String email, String password,  String location,String address , String phone) {
         this.password=password;
         this.email=email;
         this.location=location;
         this.address=address;
+        this.phone=phone;
     }
 
     public String getEmail() {
