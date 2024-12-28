@@ -6,18 +6,20 @@ public class Booking {
     private String bookingId;  // Unique booking ID
     private String userId;  // User who made the booking
     private String hotelId;  // Associated hotel
-    private String roomId;  // Associated room or event
+    private String roomId;  // Associated room
+    private String roomType;  // Type of room (e.g., "Deluxe", "Suite")
     private Date startDate;  // Start date of the booking
     private Date endDate;  // End date of the booking
     private String status;  // Booking status (e.g., "confirmed", "canceled", "pending")
     private double totalAmount;  // Total amount for the booking
 
     // Constructor
-    public Booking(String bookingId, String userId, String hotelId, String roomId, Date startDate, Date endDate, String status, double totalAmount) {
+    public Booking(String bookingId, String userId, String hotelId, String roomId, String roomType, Date startDate, Date endDate, String status, double totalAmount) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.hotelId = hotelId;
         this.roomId = roomId;
+        this.roomType = roomType;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
@@ -55,6 +57,14 @@ public class Booking {
 
     public void setRoomId(String roomId) {
         this.roomId = roomId;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
     }
 
     public Date getStartDate() {

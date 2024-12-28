@@ -58,4 +58,62 @@ public class HotelService {
         }
         return false;
     }
+
+    // Check if a room is available
+    public boolean checkRoomAvailability(String hotelId, String roomType) {
+        Hotel hotel = getHotelById(hotelId);
+        if (hotel != null) {
+            for (RoomType room : hotel.getRoomTypes()) {
+                if (room.getType().equalsIgnoreCase(roomType) && room.getAvailableRooms() > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Decrease room availability
+    public boolean decreaseRoomAvailability(String hotelId, String roomType) {
+        Hotel hotel = getHotelById(hotelId);
+        if (hotel != null) {
+            for (RoomType room : hotel.getRoomTypes()) {
+                if (room.getType().equalsIgnoreCase(roomType) && room.getAvailableRooms() > 0) {
+                    room.setAvailableRooms(room.getAvailableRooms() - 1);
+                    return true;
+                }
+            }
+        }
+                return false;
+    }
+
+    // Increase room availability
+    public void increaseRoomAvailability(String hotelId, String roomType) {
+        Hotel hotel = getHotelById(hotelId);
+        if (hotel != null) {
+            for (RoomType room : hotel.getRoomTypes()) {
+                if (room.getType().equalsIgnoreCase(roomType)) {
+                    room.setAvailableRooms(room.getAvailableRooms() + 1);
+                    return;
+                }
+            }
+        }
+    }
+
+    public String getRoomIdForRoomType(String hotelId, String roomType) {
+        // Retrieve the hotel by ID
+        Hotel hotel = getHotelById(hotelId);
+        if (hotel == null) {
+            return null; // Hotel not found
+        }
+    
+        // Iterate through the room types to find the matching type
+        for (RoomType room : hotel.getRoomTypes()) {
+            if (room.getType().equalsIgnoreCase(roomType)) {
+                return room.getRoomId(); // Return the roomId for the matching room type
+            }
+        }
+    
+        return null; // Room type not found
+    }
+    
 }

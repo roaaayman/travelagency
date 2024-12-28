@@ -14,17 +14,35 @@ public class BookingService {
 
     private List<Booking> bookings = new ArrayList<>();
 
-    // Create a new booking
-    public void createBooking(String userId, String hotelId, String roomId, String startDateStr, String endDateStr, double totalAmount) {
+    public void createBooking(String userId, String hotelId, String roomId, String roomType, String startDateStr, String endDateStr, double totalAmount) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            // Parse start and end dates
             Date startDate = sdf.parse(startDateStr);
             Date endDate = sdf.parse(endDateStr);
+    
+            // Validate that the end date is after the start date
+            if (endDate.before(startDate)) {
+                throw new IllegalArgumentException("End date must be after start date.");
+            }
+    
+            // Generate a unique booking ID
             String bookingId = String.valueOf(System.currentTimeMillis());
-            Booking booking = new Booking(bookingId, userId, hotelId, roomId, startDate, endDate, "pending", totalAmount);
+    
+            // Create the booking
+            Booking booking = new Booking(bookingId, userId, hotelId, roomId, roomType, startDate, endDate, "pending", totalAmount);
+    
+            // Add the booking to the list
             bookings.add(booking);
+    
         } catch (ParseException e) {
-            e.printStackTrace();
+            // Log and rethrow the exception or handle gracefully
+            System.err.println("Error parsing dates: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd.", e);
+        } catch (IllegalArgumentException e) {
+            // Handle invalid date range or other validation issues
+            System.err.println("Error creating booking: " + e.getMessage());
+            throw e;
         }
     }
 
